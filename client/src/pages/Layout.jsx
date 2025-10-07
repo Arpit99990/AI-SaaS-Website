@@ -30,7 +30,6 @@ const Layout = () => {
             <Outlet />
           </div>
       </div>
-      <Outlet />
     </div>
   ) : (
     <div className='flex items-center justify-center h-screen'>
