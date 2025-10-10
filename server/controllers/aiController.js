@@ -12,7 +12,7 @@ export const generateArticle = async (req, res)=>{
     try {
         const {userID} = req.auth();
         const {prompt, length} = req.body;
-        const plan = req.paln;
+        const plan = req.plan;
         const free_usage = req.free_usage;
 
         if(plan !== 'premium' && free_usage >= 10){
@@ -34,7 +34,7 @@ export const generateArticle = async (req, res)=>{
 const content = response.choices[0].message.content
 
 await sql` INSERT INTO creations (user_id, prompt, content, type)
-VALUES (${user_id}, ${prompt}, ${content}, 'article')`;
+VALUES (${userID}, ${prompt}, ${content}, 'article')`;
 
 if(plan !== 'premium'){
     await clerkClient.users.updateUserMetadata(userID, {
