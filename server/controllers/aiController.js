@@ -10,7 +10,7 @@ const AI = new OpenAI({
 
 export const generateArticle = async (req, res)=>{
     try {
-        const {userID} = req.auth();
+        const {userId} = req.auth();
         const {prompt, length} = req.body;
         const plan = req.plan;
         const free_usage = req.free_usage;
@@ -34,10 +34,10 @@ export const generateArticle = async (req, res)=>{
 const content = response.choices[0].message.content
 
 await sql` INSERT INTO creations (user_id, prompt, content, type)
-VALUES (${userID}, ${prompt}, ${content}, 'article')`;
+VALUES (${userId}, ${prompt}, ${content}, 'article')`;
 
 if(plan !== 'premium'){
-    await clerkClient.users.updateUserMetadata(userID, {
+    await clerkClient.users.updateUserMetadata(userId, {
         privateMetadata:{
             free_usage: free_usage + 1
         }
