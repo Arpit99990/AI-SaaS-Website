@@ -1,5 +1,6 @@
 import OpenAI from "openai";
-import sql from "../configs/db";
+import sql from "../configs/db.js";
+import { clerkClient } from "@clerk/express";
 
 const AI = new OpenAI({
     apiKey: process.env.GEMINI_API_KEY,
@@ -32,10 +33,22 @@ export const generateArticle = async (req, res)=>{
 
 const content = response.choices[0].message.content
 
-await sql
+await sql` INSERT INTO creations (user_id, prompt, content, type)
+VALUES (${user_id}, ${prompt}, ${content}, 'article')`;
+
+if(plan !== 'premium'){
+    await clerkClient.users.updateUserMetadata(userID, {
+        privateMetadata:{
+            free_usage: free_usage + 1
+        }
+    })
+}
+
+res.json({success: true, content})
 
 
     } catch (error) {
-        
+        console.log(error.message)
+        res.json({success: false, message: error.message})
     }
 }
