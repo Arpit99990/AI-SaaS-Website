@@ -118,7 +118,7 @@ export const generateImage = async (req, res)=>{
             responseType: "arraybuffer",
         })
 
-        const base64Image = `data:image/png;base64,${Buffer.from(data, 'binary').toString('base64f')}`;
+        const base64Image = `data:image/png;base64,${Buffer.from(data, 'binary').toString('base64')}`;
 
         const {secure_url} = await cloudinary.uploader.upload(base64Image)
 
