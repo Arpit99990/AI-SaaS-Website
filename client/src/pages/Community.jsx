@@ -1,6 +1,5 @@
 import { useAuth, useUser } from '@clerk/clerk-react'
 import React, { useEffect, useState } from 'react'
-import { dummyPublishedCreationData } from '../assets/assets'
 import { Heart } from 'lucide-react'
 import axios from 'axios'
 import toast from 'react-hot-toast'
@@ -38,14 +37,19 @@ const Community = () => {
         headers: {Authorization: `Bearer ${await getToken()}`}
       })
 
+      // console.log(data);
+      
       if(data.success){
         toast.success(data.message)
         await fetchCreations()
-      }else{
+      }else{ console.log(data.message);
+      
         toast.error(data.message)
       }
 
     } catch (error) {
+      console.log(error);
+      
       toast.error(error.message)
     }
   }

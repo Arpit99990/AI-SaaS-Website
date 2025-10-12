@@ -32,7 +32,7 @@ export const toggleLikeCreation = async (req, res)=> {
         const {userId} = req.auth()
         const {id} = req.body
 
-        const {creation} = await sql`SELECT * FROM creations WHERE id = ${id}`
+        const {creation} = await sql `SELECT * FROM creations WHERE id = ${id}`
 
         if(!creation){
             return res.json({ success: false, message: "Creation not found" })
@@ -44,7 +44,7 @@ export const toggleLikeCreation = async (req, res)=> {
         let message;
 
         if(currentLikes.included(usedIdStr)){
-            updatedLikes = currentLikes.filter((user)=>user !== usedIdStr);
+            updatedLikes = currentLikes.filter((user)=> user !== usedIdStr);
             message = 'Creation Unliked'
         }else{
             updatedLikes = [...currentLikes, usedIdStr]
@@ -57,6 +57,8 @@ export const toggleLikeCreation = async (req, res)=> {
 
          res.json({ success: true, message});
     } catch (error) {
+        // console.log(error);
+        
         res.json({success: false, message: error.message})   
     }
 }
