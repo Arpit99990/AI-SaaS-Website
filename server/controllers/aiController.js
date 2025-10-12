@@ -4,7 +4,10 @@ import { clerkClient } from "@clerk/express";
 import axios from "axios";
 import {v2 as cloudinary} from 'cloudinary'
 import fs from 'fs'
-import pdf from 'pdf-parse/lib/pdf-parse.js'
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const pdf = require('pdf-parse');
+// import pdf from 'pdf-parse/lib/pdf-parse.js'
 
 const AI = new OpenAI({
     apiKey: process.env.GEMINI_API_KEY,
@@ -120,7 +123,7 @@ export const generateImage = async (req, res)=>{
             responseType: "arraybuffer",
         })
 
-        const base64Image = `data:image/png;base64,${Buffer.from(data, 'binary').toString('base64~')}`;
+        const base64Image = `data:image/png;base64,${Buffer.from(data, 'binary').toString('base64')}`;
 
         const {secure_url} = await cloudinary.uploader.upload(base64Image)
 
@@ -223,7 +226,7 @@ export const resumeReview = async (req, res)=>{
         }
 
         const dataBuffer = fs.readFileSync(resume.path)
-        const pdfData = await pdf(dataBuffer)
+        const pdfData = await PdfParse(dataBuffer)
 
         const prompt = `Review the following resume and provide constructive
         feedback on its strengths, weaknesses, and areas for improvement. Resume

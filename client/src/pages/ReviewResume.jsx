@@ -30,9 +30,12 @@ const ReviewResume = () => {
                 if(data.success){
                   setContent(data.content)
                 }else{
+                  
+                  
                   toast.error(data.message)
                 }
       } catch (error) {
+            console.log(error);
             toast.error(error.message)
       }
       setLoading(false)
