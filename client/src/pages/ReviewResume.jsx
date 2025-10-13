@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useAuth } from '@clerk/clerk-react';
 import toast from 'react-hot-toast';
+import Markdown from 'react-markdown';
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -23,19 +24,15 @@ const ReviewResume = () => {
             const formData = new FormData()
             formData.append('resume', input)
 
+            const { data } = await axios.post('/api/ai/resume-review', formData,
+            {headers: {Authorization: `Bearer ${await getToken()}`}})
             
-              const {data} = await axios.post('/api/ai/resume-review', formData,
-              {headers: {Authorization: `Bearer ${await getToken()}`}})
-            
-                if(data.success){
-                  setContent(data.content)
-                }else{
-                  
-                  
-                  toast.error(data.message)
-                }
+              if(data.success){
+                setContent(data.content)
+              }else{   
+                toast.error(data.message)
+              }
       } catch (error) {
-            console.log(error);
             toast.error(error.message)
       }
       setLoading(false)

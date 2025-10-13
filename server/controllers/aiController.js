@@ -4,10 +4,8 @@ import { clerkClient } from "@clerk/express";
 import axios from "axios";
 import {v2 as cloudinary} from 'cloudinary'
 import fs from 'fs'
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const pdf = require('pdf-parse');
-// import pdf from 'pdf-parse/lib/pdf-parse.js'
+
+import pdf from 'pdf-parse/lib/pdf-parse.js'
 
 const AI = new OpenAI({
     apiKey: process.env.GEMINI_API_KEY,
@@ -226,7 +224,7 @@ export const resumeReview = async (req, res)=>{
         }
 
         const dataBuffer = fs.readFileSync(resume.path)
-        const pdfData = await PdfParse(dataBuffer)
+        const pdfData = await pdf(dataBuffer)
 
         const prompt = `Review the following resume and provide constructive
         feedback on its strengths, weaknesses, and areas for improvement. Resume
@@ -248,11 +246,10 @@ const content = response.choices[0].message.content
 
 
 await sql` INSERT INTO creations (user_id, prompt, content, type)
-VALUES (${userId},'Review the upload resume', ${content}, 'resume-review')`;
+VALUES (${userId},'Review the uploaded resume', ${content}, 'resume-review')`;
 
 
 res.json({success: true, content})
-
 
     } catch (error) {
         console.log(error.message)
