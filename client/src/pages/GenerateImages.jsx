@@ -95,7 +95,7 @@ const GenerateImages = () => {
       border-gray-200 min-h-96'>
               <div className='flex items-center gap-3'>
                 <Image className='w-5 h-5 text-[#00AD25]'/>
-                <h1 className='text-xl font-semibold'>Generated image</h1>
+                <h1 className='text-xl font-semibold'>Generated Image</h1>
               </div>
               {
                 !content ? (

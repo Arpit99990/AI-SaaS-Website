@@ -85,7 +85,7 @@ const WriteArticle = () => {
       border-gray-200 min-h-96 max-h-[600px]'>
               <div className='flex items-center gap-3'>
                 <Edit className='w-5 h-5 text-[#4A7AFF]'/>
-                <h1 className='text-xl font-semibold'>Generated article</h1>
+                <h1 className='text-xl font-semibold'>Generated Article</h1>
               </div>
               {!content ? (
                 <div className='flex-1 flex justify-center items-center'>
